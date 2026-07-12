@@ -401,7 +401,7 @@ See the LICENSE file for details.
 
 ## Author
 
-**Pragyanshu Ghosh**
+**Priyangshu Ghosh**
 
 B.Tech Computer Science (AI & ML)
 
