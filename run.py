@@ -1,5 +1,6 @@
 import os
 import platform
+import shutil
 import subprocess
 import sys
 
@@ -15,28 +16,68 @@ else:
     PIP = os.path.join(VENV, "bin", "pip")
 
 print("=" * 60)
-print("GAAC AI Local Phi Server Installer")
+print("GAAC AI Local Phi Server")
 print("=" * 60)
 
+# -------------------------------------------------
 # Create virtual environment
+# -------------------------------------------------
+
 if not os.path.exists(VENV):
-    print("\nCreating virtual environment...")
-    subprocess.check_call([sys.executable, "-m", "venv", VENV])
 
-# Upgrade pip
-print("\nUpgrading pip...")
-subprocess.check_call([PYTHON, "-m", "pip", "install", "--upgrade", "pip"])
+    print("\nCreating virtual environment...\n")
 
-# Install requirements
-print("\nInstalling dependencies...")
-subprocess.check_call([PIP, "install", "-r", "requirements.txt"])
+    subprocess.check_call([
+        sys.executable,
+        "-m",
+        "venv",
+        VENV
+    ])
 
-# Copy .env if needed
-if not os.path.exists(".env") and os.path.exists(".env.example"):
-    import shutil
-    shutil.copy(".env.example", ".env")
-    print("\nCreated .env from .env.example")
+# -------------------------------------------------
+# Install requirements (only first time)
+# -------------------------------------------------
 
-print("\nStarting server...\n")
+marker = os.path.join(VENV, ".installed")
+
+if not os.path.exists(marker):
+
+    print("\nInstalling dependencies...\n")
+
+    subprocess.check_call([
+        PYTHON,
+        "-m",
+        "pip",
+        "install",
+        "--upgrade",
+        "pip"
+    ])
+
+    subprocess.check_call([
+        PIP,
+        "install",
+        "-r",
+        "requirements.txt"
+    ])
+
+    open(marker, "w").close()
+
+# -------------------------------------------------
+# Create .env
+# -------------------------------------------------
+
+if not os.path.exists(".env"):
+
+    if os.path.exists(".env.example"):
+
+        shutil.copy(".env.example", ".env")
+
+        print(".env created.")
+
+# -------------------------------------------------
+# Start Server
+# -------------------------------------------------
+
+print("\nLaunching server...\n")
 
 subprocess.call([PYTHON, "server.py"])
