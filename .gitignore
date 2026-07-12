@@ -1,0 +1,32 @@
+# Python
+
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual Environment
+
+venv/
+env/
+
+# VSCode
+
+.vscode/
+
+# Logs
+
+logs/
+
+# HuggingFace Cache
+
+.cache/
+
+# Environment
+
+.env
+
+# OS
+
+.DS_Store
+Thumbs.db
